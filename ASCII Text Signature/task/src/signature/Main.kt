@@ -1,9 +1,7 @@
 package signature
 
 import java.util.*
-/*
-Stage 3/4: Make it notable
- */
+
 fun main() {
     val data = readInpt()
     printText(data)
@@ -22,28 +20,30 @@ fun readInpt(): Array<String> {
 
 fun printText(array: Array<String>) {
     val output = Out(array)
+
     output.addStars()
     output.addName()
     output.addStatus()
     output.addStars()
+
     output.print()
 }
 
 class Out {
     val name: String
-    var lenName: Int = 0
+    var lengthName: Int = 0
     var indentName: Int = 0
     var indentNameLeft: Int = 0
     var indentNameRight: Int = 0
 
     val status: String
-    val lenStatus: Int
+    var lengthStatus: Int = 0
     var indentStatus: Int = 0
     var indentStatusLeft: Int = 0
     var indentStatusRight: Int = 0
 
-    var lenMax: Int
-    val border: Int = 2
+    var maxLength: Int
+    val border: Int = 2 // width border without *
     val nameFont: Array<Simbol>
     var put: String = ""
 
@@ -52,18 +52,18 @@ class Out {
         nameFont = initStringNameByFontAndCountLengthName()
 
         status = array[1]
-        lenStatus = status.length
+        lengthStatus = status.length
 
-        lenMax = if (lenName > lenStatus) {
-            indentStatus = lenName - lenStatus
+        maxLength = if (lengthName > lengthStatus) {
+            indentStatus = lengthName - lengthStatus
             indentStatusLeft = indentStatus / 2
             indentStatusRight = indentStatus - indentStatusLeft
-            (lenName + 6)
+            lengthName + 6
         } else {
-            indentName = lenStatus  - lenName
+            indentName = lengthStatus  - lengthName
             indentNameLeft = indentName / 2
             indentNameRight = indentName - indentNameLeft
-            (lenStatus + 6)
+            lengthStatus + 6    // 6 = 2 borders * 3 width
         }
     }
 
@@ -71,9 +71,9 @@ class Out {
         var arr: Array<Simbol> = emptyArray<Simbol>()
         for (i in 0 until name.length) {
             arr += Simbol(name[i])
-            lenName += arr[i].lengthOfChar
+            lengthName += arr[i].lengthOfChar
         }
-        lenName += name.length - 1    // + spaces between simbols
+        lengthName += name.length - 1    // + spaces between simbols
         return arr
     }
 
@@ -117,7 +117,7 @@ class Out {
     }
 
     fun addStars() {
-        repeat(lenMax) {
+        repeat(maxLength) {
             put += '*'
         }
         put += "\n"
@@ -222,20 +222,18 @@ class Simbol {
     }
 }
 
+
+
 /*
 Stage 2/4: Star quality
-
 fun main() {
     val scanner = Scanner(System.`in`)
     val str = scanner.nextLine()
-
     printStr1(str)
 }
-
 fun printStr1(str: String) {
     val len = str.length
     var output = ""
-
     repeat(len + 4) {
         output += '*'
     }
